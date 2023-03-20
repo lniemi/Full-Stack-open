@@ -8,8 +8,10 @@ const Button = ({ handleClick, text }) => (
 // Statistics component
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
-  const average = all > 0 ? roundToTwo((good - bad) / all) : 0
-  const positive = all > 0 ? roundToTwo((good / all) * 100) : 0
+  const average = all > 0 ? ((good - bad) / all).toFixed(1) : 0
+  const positive = all > 0 ? ((good / all) * 100).toFixed(1) + " %" : 0
+
+
 
   // If no feedback has been given, show a message
   if (all === 0) {
@@ -25,7 +27,7 @@ const Statistics = ({ good, neutral, bad }) => {
         <StatisticLine text="bad" value={bad} />
         <StatisticLine text="all" value={all} />
         <StatisticLine text="average" value={average} />
-        <StatisticLine text="positive" value={positive + " %"} />
+        <StatisticLine text="positive" value={positive} />
       </tbody>
     </table>
   )
@@ -39,8 +41,6 @@ const StatisticLine = ({ text, value }) => (
   </tr>
 )
 
-// Round to two decimal places
-const roundToTwo = (num) => Math.round(num * 100 + Number.EPSILON) / 100
 
 // App component
 const App = () => {
