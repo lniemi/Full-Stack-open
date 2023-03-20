@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const App = () => {
+  // Array of anecdotes
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -12,29 +13,41 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
+  // State variables to keep track of selected anecdote and its vote count
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
 
+  // Handler function for clicking the "next anecdote" button
   const handleNextClick = () => {
+    // Choose a random index from the anecdotes array
     const randomIndex = Math.floor(Math.random() * anecdotes.length)
+    // Set the selected anecdote to the one at the chosen index
     setSelected(randomIndex)
   }
 
+  // Handler function for clicking the "vote" button
   const handleVoteClick = () => {
+    // Create a copy of the points array
     const newPoints = [...points]
+    // Increment the vote count of the currently selected anecdote by 1
     newPoints[selected] += 1
+    // Update the points state with the new array
     setPoints(newPoints)
   }
 
+  // Find the index of the anecdote with the most votes
   const maxPointsIndex = points.indexOf(Math.max(...points))
 
+  // Render the app
   return (
     <div>
+      {/* Anecdote of the day section */}
       <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {points[selected]} votes</div>
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleNextClick}>next anecdote</button>
+      {/* Anecdote with most votes section */}
       <h1>Anecdote with most votes</h1>
       <div>{anecdotes[maxPointsIndex]}</div>
       <div>has {points[maxPointsIndex]} votes</div>
