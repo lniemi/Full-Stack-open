@@ -22,24 +22,44 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-
-    const isDuplicate = persons.some((person) => person.name === newName);
-
-    if (isDuplicate) {
-      alert(`${newName} is already added to phonebook`);
+  
+    const existingPerson = persons.find((person) => person.name === newName);
+  
+    if (existingPerson) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        personService
+          .update(existingPerson.id, personObject)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== existingPerson.id ? person : returnedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     } else {
       personService
         .create(personObject)
-        .then(returnedPerson => {
+        .then((returnedPerson) => {
           setPersons(persons.concat(returnedPerson));
-          setNewName('');
-          setNewNumber('');
+          setNewName("");
+          setNewNumber("");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     }
   };
+  
 
   const deletePerson = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
