@@ -49,10 +49,12 @@ const App = () => {
             );
             setNewName("");
             setNewNumber("");
-            setMessage(`Updated ${newName}'s number`);
+            setMessage(`Updated ${newName}`);
           })
           .catch((error) => {
-            console.log(error);
+            setMessage(
+              `Information of ${newName} has already been removed from the server`);
+              console.log(error);
           });
       }
     } else {
