@@ -1,39 +1,8 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const Filter = ({ filter, handleFilterChange }) => (
-  <div>
-    filter shown with <input value={filter} onChange={handleFilterChange} />
-  </div>
-);
-
-const PersonForm = ({ newName, newNumber, handleNameChange, handleNumberChange, addPerson }) => (
-  <form onSubmit={addPerson}>
-    <div>
-      name: <input value={newName} onChange={handleNameChange} />
-    </div>
-    <div>
-      number: <input value={newNumber} onChange={handleNumberChange} />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
-);
-
-const Person = ({ person }) => (
-  <p>
-    {person.name} {person.number}
-  </p>
-);
-
-const Persons = ({ filteredPersons }) => (
-  <div>
-    {filteredPersons.map((person) => (
-      <Person key={person.name} person={person} />
-    ))}
-  </div>
-);
+import { useState, useEffect } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -42,8 +11,8 @@ const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -59,10 +28,10 @@ const App = () => {
     if (isDuplicate) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      axios
-        .post('http://localhost:3001/persons', personObject)
-        .then(response => {
-          setPersons(persons.concat(response.data));
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
           setNewName('');
           setNewNumber('');
         })
