@@ -4,6 +4,6 @@ import "./index.css"
 
 import App from './App'
 
-axios.get('http://localhost:3001/api/persons').then(response => {
+axios.get('api/persons').then(response => {
   
   ReactDOM.createRoot(document.getElementById('root')).render(<App />)})

@@ -12,6 +12,7 @@ const App = () => {
   const [filter, setFilter] = useState('');
   const [message, setMessage] = useState(null);
 
+
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
@@ -23,6 +24,7 @@ const App = () => {
       setMessage(null);
     }, 5000);
   }, [message]);
+
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -66,8 +68,10 @@ const App = () => {
           setNewNumber("");
           setMessage(`Added ${newName}`);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(error => {
+          // set console log error
+          console.log(error.response.data.error)
+          setMessage(error.response.data.error)
         });
     }
   };
