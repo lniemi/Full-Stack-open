@@ -98,3 +98,24 @@ test('Deleting a blog works', async () => {
 
   expect(titles).not.toContain(blogToDelete.title)
 })
+
+test('Updating individual blog posts works', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogsToUpdate = blogsAtStart[1]
+  const updatedBlog = { ...blogsToUpdate, likes : 375284 }
+  console.log('updatedBlog is', updatedBlog)
+
+  await api
+    .put(`/api/blogs/${updatedBlog.id}`)
+    .send(updatedBlog)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const likes = blogsAtEnd.map(l => l.likes)
+
+  expect(likes[1]).toBe(updatedBlog.likes)
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
+})
