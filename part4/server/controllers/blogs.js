@@ -10,10 +10,16 @@ blogsRouter.get('/', async (req, res) => {
   res.json(blogs)
 })
 
-blogsRouter.post('/', async (req, res) => {
+blogsRouter.post('/', async (req, res, next) => {
   const body = req.body
   console.log('Token before verification: ', req.token) // Debugging
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(req.token, process.env.SECRET)
+  } catch (error) {
+    return next(error)
+  }
+
   if (!decodedToken.id) {
     return res.status(401).json({ error: 'token invalid' })
   }
@@ -41,10 +47,17 @@ blogsRouter.post('/', async (req, res) => {
   res.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (req, res) => {
-  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+blogsRouter.delete('/:id', async (req, res, next) => {
+  console.log('Token before verification: ', req.token) // Debugging
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(req.token, process.env.SECRET)
+  } catch (error) {
+    return next(error)
+  }
+
   if (!decodedToken.id) {
-    return res.status(401).json({ error: 'invalid token' })
+    return res.status(401).json({ error: 'token invalid' })
   }
 
   const user = await User.findById(decodedToken.id)

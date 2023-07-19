@@ -14,7 +14,7 @@ const errorHandler = (error, req, res, next) => {
     return res.status(400).send({ error: 'invalid token' })
   }
 
-  next(error)
+  next()
 }
 
 const requestLogger = (req, res, next) => {
@@ -29,7 +29,7 @@ const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     req.token = authorization.substring(7)
-    console.log('Token Extracted: ', req.token) // Debugging line
+    console.log('Token Extracted: ', req.token) // Debugging
   }
   next()
 }
