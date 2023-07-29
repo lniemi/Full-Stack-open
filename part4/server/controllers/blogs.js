@@ -1,7 +1,6 @@
 const express = require('express')
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 
 const blogsRouter = express.Router()
 
@@ -10,21 +9,15 @@ blogsRouter.get('/', async (req, res) => {
   res.json(blogs)
 })
 
-blogsRouter.post('/', async (req, res, next) => {
+blogsRouter.post('/', async (req, res) => {
   const body = req.body
-  console.log('Token before verification: ', req.token) // Debugging
-  let decodedToken
-  try {
-    decodedToken = jwt.verify(req.token, process.env.SECRET)
-  } catch (error) {
-    return next(error)
+  const userRequesting = req.user
+
+  if(!userRequesting.id){
+    res.status(401).json({ error : 'invalid token' })
   }
 
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'token invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(userRequesting.id)
 
   const blog = new Blog({
     url     :  body.url,
@@ -47,20 +40,13 @@ blogsRouter.post('/', async (req, res, next) => {
   res.status(201).json(savedBlog)
 })
 
-blogsRouter.delete('/:id', async (req, res, next) => {
-  console.log('Token before verification: ', req.token) // Debugging
-  let decodedToken
-  try {
-    decodedToken = jwt.verify(req.token, process.env.SECRET)
-  } catch (error) {
-    return next(error)
+blogsRouter.delete('/:id', async (req, res) => {
+  const user = req.user
+
+  if(!user.id){
+    res.status(401).json({ error : 'invalid token' })
   }
 
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'token invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
   const blog = await Blog.findById(req.params.id)
 
   if (blog.user.toString() !== user.id.toString()) {
@@ -68,7 +54,7 @@ blogsRouter.delete('/:id', async (req, res, next) => {
   }
 
   await Blog.findByIdAndRemove(req.params.id)
-  res.status(204).end()
+  res.status(204).send({ message: 'blog deleted' }).end()
 })
 
 
