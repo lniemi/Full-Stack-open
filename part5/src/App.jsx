@@ -105,7 +105,7 @@ const App = () => {
       
       {/* Add Blog Form */}
       <button onClick={() => setBlogFormVisible(true)}>Add New Blog</button>
-      {blogFormVisible && <BlogForm setBlogs={setBlogs} blogs={blogs} setNotification={setNotification} setBlogFormVisible={setBlogFormVisible} />}
+      {blogFormVisible && <BlogForm user={user} setBlogs={setBlogs} blogs={blogs} setNotification={setNotification} setBlogFormVisible={setBlogFormVisible} />}
 
       {/* List of Blogs */}
       <div>
