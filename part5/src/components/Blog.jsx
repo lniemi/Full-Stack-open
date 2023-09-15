@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike}) => {  
   const [detailsVisible, setDetailsVisible] = useState(false);
 
   const toggleDetails = () => {
     setDetailsVisible(!detailsVisible);
   };
-
+  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -23,7 +23,7 @@ const Blog = ({ blog }) => {
       {detailsVisible && (
         <div>
           <div>{blog.url}</div>
-          <div>likes {blog.likes} <button>like</button></div>
+          <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>  {/* <-- using handleLike from props */}
           <div>{blog.user?.name}</div>
         </div>
       )}

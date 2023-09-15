@@ -8,17 +8,24 @@ import './App.css';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' });
- // const [showAll, setShowAll] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState({ message: null, type: null });
   const [blogFormVisible, setBlogFormVisible] = useState(false);
+  const [updateTrigger, setUpdateTrigger] = useState(0); 
 
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs));
+    const fetchBlogs = async () => {
+      try {
+        const blogs = await blogService.getAll();
+        setBlogs(blogs.sort((a, b) => b.likes - a.likes));
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+    fetchBlogs();
   }, []);
 
   useEffect(() => {
@@ -57,14 +64,45 @@ const App = () => {
     setUser(null);
   };
   
-
-  //const blogsToShow = showAll
-  //  ? blogs
-  //  : blogs.filter(blog => blog.important);
-
-
+  const updateBlogLikes = async blog => {
+    try {
+      const { user, ...blogWithoutUser } = blog;
+      const updatedBlog = await blogService.update(blog.id, {
+        ...blogWithoutUser,
+        likes: blog.likes + 1,
+      });
+      const updatedBlogWithUser = {
+        ...updatedBlog,
+        user: blog.user,
+      };
+      setBlogs(prevBlogs => {
+        const updatedBlogs = prevBlogs.map(prevBlog =>
+          prevBlog.id === updatedBlogWithUser.id
+            ? updatedBlogWithUser
+            : prevBlog
+        );
+        return updatedBlogs;
+      });
+      
+      setUpdateTrigger(prevTrigger => prevTrigger + 1); 
+    } catch (error) {
+      console.log("Error updating likes", error);
+    }
+  };
   
-///////////////////////////////////////////////////////////////////////////////// JSX code
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const blogs = await blogService.getAll();
+        //setBlogs(blogs.sort((a, b) => b.likes - a.likes));  save this for next exercise
+        setBlogs(blogs);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+    fetchBlogs();
+  }, [updateTrigger]);  
+  
 
   if (user === null) {
     return (
@@ -110,7 +148,7 @@ const App = () => {
       {/* List of Blogs */}
       <div>
         {blogs.map(blog => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={() => updateBlogLikes(blog)} />
         ))}
       </div>
     </div>
