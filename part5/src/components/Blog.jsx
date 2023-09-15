@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Blog = ({ blog, handleLike}) => {  
+const Blog = ({ blog, handleLike, deleteBlog, user}) => {  
   const [detailsVisible, setDetailsVisible] = useState(false);
 
   const toggleDetails = () => {
@@ -17,18 +17,23 @@ const Blog = ({ blog, handleLike}) => {
 
   return (
     <div style={blogStyle}>
-      <div> 
+      <div>
         {blog.title} {blog.author} <button onClick={toggleDetails}>{detailsVisible ? 'hide' : 'view'}</button>
       </div>
       {detailsVisible && (
         <div>
           <div>{blog.url}</div>
-          <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>  {/* <-- using handleLike from props */}
+          <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
           <div>{blog.user?.name}</div>
+          
+          {/* Show Delete button only for the user who added the blog */}
+          {user && blog.user && user.username === blog.user.username && (
+            <button onClick={() => deleteBlog(blog)}>Delete</button>
+          )}
+
         </div>
       )}
     </div>
   );
 };
-
 export default Blog;

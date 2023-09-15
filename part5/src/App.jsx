@@ -89,6 +89,17 @@ const App = () => {
       console.log("Error updating likes", error);
     }
   };
+
+  const deleteBlog = async (blog) => {
+    try {
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+        await blogService.remove(blog.id);
+        setBlogs(prevBlogs => prevBlogs.filter(b => b.id !== blog.id));
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
+  };
   
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -148,7 +159,7 @@ const App = () => {
       {/* List of Blogs */}
       <div>
         {blogs.map(blog => (
-          <Blog key={blog.id} blog={blog} handleLike={() => updateBlogLikes(blog)} />
+          <Blog key={blog.id} blog={blog} handleLike={() => updateBlogLikes(blog)} deleteBlog={deleteBlog} user={user} />
         ))}
       </div>
     </div>
