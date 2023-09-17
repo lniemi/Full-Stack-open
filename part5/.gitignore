@@ -23,3 +23,5 @@ vite.config.js
 *.njsproj
 *.sln
 *.sw?
+
+blogForm.test.jsx

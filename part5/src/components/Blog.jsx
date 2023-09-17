@@ -15,13 +15,15 @@ const Blog = ({ blog, handleLike, deleteBlog, user }) => {
     marginBottom: 5
   }
 
+
+
   return (
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author} <button onClick={toggleDetails}>{detailsVisible ? 'hide' : 'view'}</button>
       </div>
       {detailsVisible && (
-        <div>
+        <div data-testid="togglableContent">
           <div>{blog.url}</div>
           <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
           <div>{blog.user?.name}</div>
