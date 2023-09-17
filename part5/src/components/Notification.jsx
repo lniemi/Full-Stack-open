@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types'
+
 const Notification = ({ message, type }) => {
   if (message === null || typeof message !== 'string') {
-    return null;
+    return null
   }
 
   const successStyle = {
@@ -11,7 +13,7 @@ const Notification = ({ message, type }) => {
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-  };
+  }
 
   const errorStyle = {
     color: 'red',
@@ -20,15 +22,19 @@ const Notification = ({ message, type }) => {
     borderStyle: 'solid',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10,  
-  };
+    marginBottom: 10,
+  }
 
   return (
     <div style={type === 'error' ? errorStyle : successStyle}>
       {message}
     </div>
-  );
-};
+  )
+}
 
+Notification.propTypes = {
+  message: PropTypes.string,
+  type: PropTypes.string,
+}
 
-export default Notification;
+export default Notification

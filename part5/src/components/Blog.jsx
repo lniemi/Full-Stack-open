@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-const Blog = ({ blog, handleLike, deleteBlog, user}) => {  
-  const [detailsVisible, setDetailsVisible] = useState(false);
+const Blog = ({ blog, handleLike, deleteBlog, user }) => {
+  const [detailsVisible, setDetailsVisible] = useState(false)
 
   const toggleDetails = () => {
-    setDetailsVisible(!detailsVisible);
-  };
-  
+    setDetailsVisible(!detailsVisible)
+  }
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  };
+  }
 
   return (
     <div style={blogStyle}>
@@ -25,7 +25,7 @@ const Blog = ({ blog, handleLike, deleteBlog, user}) => {
           <div>{blog.url}</div>
           <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
           <div>{blog.user?.name}</div>
-          
+
           {/* Show Delete button only for the user who added the blog */}
           {user && blog.user && user.username === blog.user.username && (
             <button onClick={() => deleteBlog(blog)}>Delete</button>
@@ -34,6 +34,6 @@ const Blog = ({ blog, handleLike, deleteBlog, user}) => {
         </div>
       )}
     </div>
-  );
-};
-export default Blog;
+  )
+}
+export default Blog
