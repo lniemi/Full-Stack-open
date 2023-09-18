@@ -40,6 +40,7 @@ const BlogForm = ({ setBlogs, blogs, setNotification, setBlogFormVisible, user }
         <div>
           title
           <input
+            id = "title"
             type="text"
             value={newBlog.title}
             onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })}
@@ -48,6 +49,7 @@ const BlogForm = ({ setBlogs, blogs, setNotification, setBlogFormVisible, user }
         <div>
           author
           <input
+            id = "author"
             type="text"
             value={newBlog.author}
             onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })}
@@ -56,12 +58,13 @@ const BlogForm = ({ setBlogs, blogs, setNotification, setBlogFormVisible, user }
         <div>
           url
           <input
+            id = "url"
             type="text"
             value={newBlog.url}
             onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })}
           />
         </div>
-        <button type="submit">create</button>
+        <button id= "create-button" type="submit">create</button>
       </form>
       <button onClick={() => setBlogFormVisible(false)}>cancel</button>
     </div>
