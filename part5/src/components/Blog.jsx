@@ -25,7 +25,7 @@ const Blog = ({ blog, handleLike, deleteBlog, user }) => {
       {detailsVisible && (
         <div data-testid="togglableContent">
           <div>{blog.url}</div>
-          <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
+          <div>likes {blog.likes} <button id="like-button" onClick={handleLike}>like</button></div>
           <div>{blog.user?.name}</div>
 
           {/* Show Delete button only for the user who added the blog */}

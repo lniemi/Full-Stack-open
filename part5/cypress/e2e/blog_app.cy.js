@@ -54,5 +54,17 @@ describe('Blog', function () {
       cy.get('#create-button').click()
       cy.contains('Tepon Testiblogi')
     })
+
+    it('A blog can be liked', function () {
+      cy.contains('Add New Blog').click()
+      cy.get('#title').type('Tepon Testiblogi')
+      cy.get('#author').type('Teppo Testaaja')
+      cy.get('#url').type('www.testiblogi.fi')
+      cy.get('#create-button').click()
+      cy.contains('Tepon Testiblogi')
+      cy.contains('view').click()
+      cy.get('#like-button').click()
+      cy.contains('likes 1')
+    })
   })
 })
