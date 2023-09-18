@@ -30,7 +30,7 @@ const Blog = ({ blog, handleLike, deleteBlog, user }) => {
 
           {/* Show Delete button only for the user who added the blog */}
           {user && blog.user && user.username === blog.user.username && (
-            <button onClick={() => deleteBlog(blog)}>Delete</button>
+            <button id="delete-button" onClick={() => deleteBlog(blog)}>Delete</button>
           )}
 
         </div>

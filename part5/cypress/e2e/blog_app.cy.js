@@ -66,5 +66,18 @@ describe('Blog', function () {
       cy.get('#like-button').click()
       cy.contains('likes 1')
     })
+    it('A blog can be created and deleted', function() {
+      cy.contains('Add New Blog').click()
+      cy.get('#title').type('Blog to be deleted')
+      cy.get('#author').type('Author to be deleted')
+      cy.get('#url').type('http://to-be-deleted.com')
+      cy.get('#create-button').click()
+      cy.contains('Blog to be deleted')
+      cy.contains('view').click()
+      cy.get('#delete-button').click()
+      cy.wait(1000) // 1s
+      cy.on('window:confirm', () => true)
+      cy.contains('Blog to be deleted').should('not.exist')
+    })
   })
 })
