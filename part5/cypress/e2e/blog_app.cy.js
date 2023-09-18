@@ -102,5 +102,54 @@ describe('Blog', function () {
       cy.get('@blogRow').contains('view').click()
       cy.get('@blogRow').should('not.contain', 'Delete')
     })
+    it('Blogs are sorted by likes', function () {
+      cy.contains('logout').click()
+      cy.wait(1000) // 1s
+      cy.get('#username').type('Ttestaaja')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+      const blogs = [
+        { title: 'First Blog', author: 'Author 1', url: 'http://first.blog' },
+        { title: 'Second Blog', author: 'Author 2', url: 'http://second.blog' },
+        { title: 'Third Blog', author: 'Author 3', url: 'http://third.blog' },
+      ]
+      blogs.forEach((blog) => {
+        cy.contains('Add New Blog').click()
+        cy.get('#title').type(blog.title)
+        cy.get('#author').type(blog.author)
+        cy.get('#url').type(blog.url)
+        cy.get('#create-button').click()
+        cy.contains(blog.title)
+      })
+
+      cy.get('.blog').then((blogList) => {
+        // Like the first blog once
+        cy.wrap(blogList[0]).contains('view').click()
+        cy.wrap(blogList[0]).contains('like').click()
+        cy.wrap(blogList[0]).contains('likes 1')
+
+        // Like the second blog twice
+        cy.wrap(blogList[1]).contains('view').click()
+        cy.wrap(blogList[1]).contains('like').click()
+        cy.wrap(blogList[1]).contains('likes 1')
+        cy.wrap(blogList[1]).contains('like').click()
+        cy.wrap(blogList[1]).contains('likes 2')
+        // Like the third blog thrice
+        cy.wrap(blogList[2]).contains('view').click()
+        cy.wrap(blogList[2]).contains('like').click()
+        cy.wrap(blogList[2]).contains('likes 1')
+        cy.wrap(blogList[2]).contains('like').click()
+        cy.wrap(blogList[2]).contains('likes 2')
+        cy.wrap(blogList[2]).contains('like').click()
+        cy.wrap(blogList[2]).contains('likes 3')
+      })
+
+      // Check the order of blogs
+      cy.get('.blog').then((blogList) => {
+        cy.wrap(blogList[0]).should('contain', 'Third Blog')
+        cy.wrap(blogList[1]).should('contain', 'Second Blog')
+        cy.wrap(blogList[2]).should('contain', 'First Blog')
+      })
+    })
   })
 })
