@@ -75,6 +75,9 @@ const CreateNew = (props) => {
       info: info.value,
       votes: 0
     })
+    content.reset()
+    author.reset()
+    info.reset()
     navigate('/')
   }
 
@@ -95,6 +98,7 @@ const CreateNew = (props) => {
           <input name='info' {...info} />
         </div>
         <button>create</button>
+        <button type="button" onClick={() => { content.reset(); author.reset(); info.reset() }}>reset</button>
       </form>
     </div>
   )
