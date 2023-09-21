@@ -1,0 +1,30 @@
+{
+  "notes": [
+      {
+          "content": "custom-hooks are awesome!",
+          "id": 1
+      },
+      {
+          "content": "the best featrure ever <3",
+          "id": 2
+      }
+  ],
+  "persons": [
+      {
+          "name": "mluukkai",
+          "number": "040-5483923",
+          "id": 1
+      },
+      {
+          "name": "lniemi",
+          "number": "0100100",
+          "id": 2
+      },
+      {
+        "name": "Radio Yerevan",
+        "number": "41692346908123690469082316984326980123406891342068912340689",
+        "id": 3
+      }
+
+  ]
+}
